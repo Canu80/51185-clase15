@@ -40,27 +40,29 @@ export default class CartsManagerMongo {
   // Agregamos productos al carrito
   addProductsInCart = async (cid, pid) => {
     
-    const cart = await cartsModel.findOne({_id:cid})
-    const indexProduct = cart.products.findIndex((cartP) => cartP._id == cid);
+    const carts = await this.getCarts();
+    const filteredCar = carts.find((cart) => cart._id == cid);
+    let productsInCart = filteredCar.products;
+    const indexProduct = productsInCart.findIndex((product) => product._id == pid);
+    
     
     if (indexProduct === -1) {
-      const product = {
+       const product = {
         _id: pid,
         quantity: 1
       }
-      cart.products.push(product)
+      productsInCart.push(product)
     }
     else{
-      let total = cart.products[indexProduct].quantity;
-      cart.products[indexProduct].quantity = total + 1;
+      productsInCart[indexProduct].quantity = productsInCart[indexProduct].quantity + 1;
     }
 
-    const result = await cartsModel.updateOne({_id:cid},{$set:cart})
-
+    const result = await cartsModel.updateOne({_id:cid},{$set:filteredCar})
+    
     return {
       code: 202,
       status: "Success",
-      message: cart.products
+      message: filteredCar
     };
   };
 }
