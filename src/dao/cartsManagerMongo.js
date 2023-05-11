@@ -41,7 +41,7 @@ export default class CartsManagerMongo {
   addProductsInCart = async (cid, pid) => {
     
     const cart = await cartsModel.findOne({_id:cid})
-    const indexProduct = cart.products.findIndex((cartP) => cartP._id === cid);
+    const indexProduct = cart.products.findIndex((cartP) => cartP._id == cid);
     
     if (indexProduct === -1) {
       const product = {

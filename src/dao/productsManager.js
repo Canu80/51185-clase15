@@ -86,4 +86,4 @@ export default class ProductsManager {
       return error;
     }
   };
-}
+
