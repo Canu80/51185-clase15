@@ -6,12 +6,8 @@ const path = __dirname + "/files/products.json";
 export default class ProductsManager {
   // Recibo todos los productos
   getProducts = async () => {
-    if (fs.existsSync(path)) {
-      const read = await fs.promises.readFile(path, "utf-8");
-      const products = JSON.parse(read);
+      const products = await productModel.find();
       return products;
-    } else {
-      return [];
     }
   };
 

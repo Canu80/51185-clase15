@@ -22,25 +22,25 @@ export default class CartsManagerMongo {
     return {
       code: 202,
       status: "Success",
-      message: cart.product
+      message: cart
     };
     
   };
 
   // Creamos un nuevo carrito
   addCart = async () => {
-    const cart = await cartsModel.create({});
+    const result = await cartsModel.create({});
     return {
       code: 202,
       status: "Success",
-      message: cart
+      message: result
     };
   };
 
   // Agregamos productos al carrito
   addProductsInCart = async (cid, pid) => {
+    
     const cart = await cartsModel.findOne({_id:cid})
-
     const indexProduct = cart.products.findIndex((cartP) => cartP._id === cid);
     
     if (indexProduct === -1) {
@@ -54,6 +54,7 @@ export default class CartsManagerMongo {
       let total = cart.products[indexProduct].quantity;
       cart.products[indexProduct].quantity = total + 1;
     }
+
     const result = await cartsModel.updateOne({_id:cid},{$set:cart})
 
     return {
