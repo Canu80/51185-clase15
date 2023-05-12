@@ -1,12 +1,14 @@
 import { Router } from "express";
 import ProductsManager from "../manager/productsManager.js";
+import ProductsManagerMongo from "../productsManagerMongo.js";
 
 const router = Router();
 const productsManager = new ProductsManager();
+const productsManagerMongo = new ProductsManagerMongo();
 
 // Obtenemos todos los productos
 router.get("/", async (req, res) => {
-  let allProducts = await productsManager.getProducts();
+  let allProducts = await productsManagerMongo.getProducts();
   res.render("realTimeProducts", { products: allProducts });
 });
 
@@ -30,7 +32,7 @@ router.post("/", async (req, res) => {
     category,
   };
 
-  const msg = await productsManager.addProduct(newProduct);
+  const msg = await productsManagerMongo.addProduct(newProduct);
   res.send("Producto agregado");
 });
 
@@ -38,7 +40,7 @@ router.post("/", async (req, res) => {
 // Eliminar un producto
 router.delete("/", async (req, res) => {
   const id = req.body.id;
-  const msg = await productsManager.deleteProduct(id);
+  const msg = await productsManagerMongo.deleteProduct(id);
   res.render("realTimeProducts");
 });
 
